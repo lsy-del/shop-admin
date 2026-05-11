@@ -11,7 +11,7 @@ export default defineConfig([
     name: 'app/files-to-lint',
     files: ['**/*.{vue,js,mjs,jsx}'],
     plugins: {
-      prettier: pluginPrettier // 必须加这行！声明 Prettier 插件
+      prettier: pluginPrettier
     },
     rules: {
       'prettier/prettier': [
