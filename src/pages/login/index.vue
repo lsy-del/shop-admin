@@ -37,10 +37,18 @@ const onSubmit = () => {
 
         <el-form :model="form" class="w-[250px]">
           <el-form-item>
-            <el-input v-model="form.username" placeholder="请输入用户名" />
+            <el-input
+              prefix-icon="User"
+              v-model="form.username"
+              placeholder="请输入用户名"
+            />
           </el-form-item>
           <el-form-item>
-            <el-input v-model="form.password" placeholder="请输入密码" />
+            <el-input
+              prefix-icon="Lock"
+              v-model="form.password"
+              placeholder="请输入密码"
+            />
           </el-form-item>
           <el-form-item>
             <el-button
