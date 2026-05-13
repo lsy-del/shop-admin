@@ -1,11 +1,50 @@
 <script setup>
 import { ref } from 'vue'
-const form = ref({
+import { loginService } from '@/api/manager'
+import { ElMessage } from 'element-plus'
+
+const loginForm = ref({
   username: '',
   password: ''
 })
+
+const loginFormRef = ref(null)
+
+const rules = ref({
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    {
+      min: 3,
+      max: 10,
+      message: '用户名长度必须在3-10个字符之间',
+      trigger: 'blur'
+    }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    {
+      min: 5,
+      max: 12,
+      message: '密码长度必须在5-12个字符之间',
+      trigger: 'blur'
+    }
+  ]
+})
+
 const onSubmit = () => {
-  console.log('submit!')
+  loginFormRef.value.validate((valid) => {
+    if (!valid) {
+      return false
+    }
+    loginService(loginForm.value)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.error(err.response.data)
+        ElMessage.error(err.response.data.msg || '请求失败')
+      })
+  })
 }
 </script>
 
@@ -31,18 +70,24 @@ const onSubmit = () => {
           <span class="hr"></span>
         </div>
 
-        <el-form :model="form" class="w-[250px]">
-          <el-form-item>
+        <el-form
+          ref="loginFormRef"
+          :model="loginForm"
+          :rules="rules"
+          class="w-[250px]"
+        >
+          <el-form-item prop="username">
             <el-input
               prefix-icon="User"
-              v-model="form.username"
+              v-model="loginForm.username"
               placeholder="请输入用户名"
             />
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input
               prefix-icon="Lock"
-              v-model="form.password"
+              v-model="loginForm.password"
+              type="password"
               placeholder="请输入密码"
             />
           </el-form-item>
