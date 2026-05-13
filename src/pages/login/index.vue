@@ -2,6 +2,9 @@
 import { ref } from 'vue'
 import { loginService } from '@/api/manager'
 import { ElMessage } from 'element-plus'
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore()
 
 const loginForm = ref({
   username: '',
@@ -38,10 +41,11 @@ const onSubmit = () => {
     }
     loginService(loginForm.value)
       .then((res) => {
-        console.log(res)
+        ElMessage.success('登录成功')
+        userStore.setToken(res.data.data.token)
       })
       .catch((err) => {
-        console.error(err.response.data)
+        console.log(err)
         ElMessage.error(err.response.data.msg || '请求失败')
       })
   })

@@ -1,8 +1,10 @@
+import './style.css'
 import 'virtual:windi.css'
+import 'element-plus/dist/index.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import persist from 'pinia-plugin-persistedstate'
+import persist from 'pinia-plugin-persistedstate' // 引入持久化插件
 
 import App from './App.vue'
 import router from './router'
