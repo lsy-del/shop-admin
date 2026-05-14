@@ -5,18 +5,30 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: () => import('@/pages/home/index.vue')
+      component: () => import('@/layout/admin.vue'),
+      children: [
+        {
+          path: '/',
+          component: () => import('@/pages/home/index.vue'),
+          meta: {
+            title: '后台首页'
+          }
+        }
+      ]
     },
     {
       path: '/login',
-      name: 'login',
-      component: () => import('@/pages/login/index.vue')
+      component: () => import('@/pages/login/index.vue'),
+      meta: {
+        title: '登录页'
+      }
     },
     {
       path: '/:pathMatch(.*)',
-      name: '404',
-      component: () => import('@/pages/404NotFound/index.vue')
+      component: () => import('@/pages/404NotFound/index.vue'),
+      meta: {
+        title: '404 Not Found'
+      }
     }
   ]
 })

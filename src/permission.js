@@ -1,9 +1,13 @@
 import router from '@/router'
 import { useUserStore } from '@/stores/user'
 import { ElMessage } from 'element-plus'
+import { showLoading, hideLoading } from '@/utils/ui-utils'
 
 // 前置守卫
 router.beforeEach(async (to, from, next) => {
+  // 显示loading
+  showLoading()
+
   const userStore = useUserStore()
   if (!userStore.token && to.path !== '/login') {
     ElMessage.error('请先登录')
@@ -20,5 +24,14 @@ router.beforeEach(async (to, from, next) => {
     await userStore.getInfo()
   }
 
+  let title = to.meta.title ? to.meta.title : '商城后台管理系统'
+  document.title = title
+
   next()
+})
+
+// 全局后置守卫
+router.afterEach((to, from) => {
+  // 隐藏loading
+  hideLoading()
 })

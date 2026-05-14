@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
+import router from '@/router'
 
 const baseURL = '/api'
 
@@ -27,7 +28,14 @@ instance.interceptors.response.use(
     return res.data.data
   },
   (err) => {
-    ElMessage.error(err.response.data.msg || '请求失败')
+    const msg = err.response.data.msg || '请求失败'
+    ElMessage.error(msg)
+    if (msg === '非法token，请先登录') {
+      const userStore = useUserStore()
+      userStore.logout()
+      router.push('/login')
+      return Promise.reject(err)
+    }
     return Promise.reject(err)
   }
 )

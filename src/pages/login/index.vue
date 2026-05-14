@@ -46,6 +46,7 @@ const onSubmit = () => {
       .then((res) => {
         ElMessage.success('登录成功')
         userStore.setToken(res.token)
+        userStore.getInfo()
         router.push('/')
       })
       .finally(() => {

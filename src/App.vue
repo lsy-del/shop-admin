@@ -6,4 +6,9 @@
   </div>
 </template>
 
-<style scoped></style>
+<style>
+#nprogress .bar {
+  background-color: #a886ff !important;
+  height: 3px !important;
+}
+</style>

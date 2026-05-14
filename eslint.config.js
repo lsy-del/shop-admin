@@ -27,7 +27,7 @@ export default defineConfig([
       'vue/multi-word-component-names': [
         'warn',
         {
-          ignores: ['index']
+          ignores: ['index', 'admin']
         }
       ],
       'vue/no-setup-props-destructure': ['off'],

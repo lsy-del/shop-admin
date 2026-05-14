@@ -17,6 +17,7 @@ for (const [key, component] of Object.entries(icon)) {
 
 import 'virtual:windi.css'
 import './permission.js'
+import 'nprogress/nprogress.css'
 // 引入权限守卫
 
 app.use(createPinia().use(persist))

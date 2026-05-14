@@ -7,3 +7,19 @@ export const loginService = ({ username, password }) => {
 export const getInfoService = () => {
   return request.post('/admin/getinfo')
 }
+
+export const logoutService = () => {
+  return request.post('/admin/logout')
+}
+
+export const updatePasswordService = ({
+  oldpassword,
+  password,
+  repassword
+}) => {
+  return request.post('/admin/updatepassword', {
+    oldpassword,
+    password,
+    repassword
+  })
+}

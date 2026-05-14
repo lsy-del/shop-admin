@@ -34,13 +34,24 @@ export const useUserStore = defineStore(
       })
     }
 
+    const removeUserInfo = () => {
+      userInfo.value = {}
+    }
+
+    const logout = () => {
+      removeToken()
+      removeUserInfo()
+    }
+
     return {
       token,
       setToken,
       removeToken,
       userInfo,
       setUserInfo,
-      getInfo
+      getInfo,
+      removeUserInfo,
+      logout
     }
   },
   {
