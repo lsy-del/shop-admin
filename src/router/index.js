@@ -14,7 +14,7 @@ const router = createRouter({
       component: () => import('@/pages/login/index.vue')
     },
     {
-      path: '/:pathMatch(.*)*',
+      path: '/:pathMatch(.*)',
       name: '404',
       component: () => import('@/pages/404NotFound/index.vue')
     }

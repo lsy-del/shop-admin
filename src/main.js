@@ -1,5 +1,4 @@
 import './style.css'
-import 'virtual:windi.css'
 import 'element-plus/dist/index.css'
 
 import { createApp } from 'vue'
@@ -15,6 +14,11 @@ const app = createApp(App)
 for (const [key, component] of Object.entries(icon)) {
   app.component(key, component)
 }
+
+import 'virtual:windi.css'
+import './permission.js'
+// 引入权限守卫
+
 app.use(createPinia().use(persist))
 app.use(router)
 

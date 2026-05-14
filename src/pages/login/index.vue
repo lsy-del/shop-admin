@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-import { loginService } from '@/api/manager'
+import { loginService, getInfoService } from '@/api/manager'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
+import router from '@/router'
 
 const userStore = useUserStore()
 
@@ -12,6 +13,7 @@ const loginForm = ref({
 })
 
 const loginFormRef = ref(null)
+const loading = ref(false)
 
 const rules = ref({
   username: [
@@ -39,14 +41,20 @@ const onSubmit = () => {
     if (!valid) {
       return false
     }
+    loading.value = true
     loginService(loginForm.value)
       .then((res) => {
         ElMessage.success('登录成功')
-        userStore.setToken(res.data.data.token)
+        userStore.setToken(res.token)
+
+        getInfoService().then((res2) => {
+          userStore.setUserInfo(res2)
+        })
+
+        router.push('/')
       })
-      .catch((err) => {
-        console.log(err)
-        ElMessage.error(err.response.data.msg || '请求失败')
+      .finally(() => {
+        loading.value = false
       })
   })
 }
@@ -102,6 +110,7 @@ const onSubmit = () => {
               class="w-[250px]"
               type="primary"
               @click="onSubmit"
+              :loading="loading"
               >登 录</el-button
             >
           </el-form-item>

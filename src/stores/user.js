@@ -14,10 +14,18 @@ export const useUserStore = defineStore(
       token.value = ''
     }
 
+    const userInfo = ref({})
+
+    const setUserInfo = (newUserInfo) => {
+      userInfo.value = newUserInfo
+    }
+
     return {
       token,
       setToken,
-      removeToken
+      removeToken,
+      userInfo,
+      setUserInfo
     }
   },
   {
