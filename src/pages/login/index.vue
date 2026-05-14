@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue'
-import { loginService, getInfoService } from '@/api/manager'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { loginService } from '@/api/manager'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
 import router from '@/router'
@@ -46,11 +46,6 @@ const onSubmit = () => {
       .then((res) => {
         ElMessage.success('登录成功')
         userStore.setToken(res.token)
-
-        getInfoService().then((res2) => {
-          userStore.setUserInfo(res2)
-        })
-
         router.push('/')
       })
       .finally(() => {
@@ -58,6 +53,23 @@ const onSubmit = () => {
       })
   })
 }
+
+// 监听键盘事件
+const onKey = (e) => {
+  if (e.key === 'Enter') {
+    onSubmit()
+  }
+}
+
+// 组件挂载时监听键盘事件
+onMounted(() => {
+  document.addEventListener('keyup', onKey)
+})
+
+// 组件卸载时移除键盘事件监听
+onBeforeUnmount(() => {
+  document.removeEventListener('keyup', onKey)
+})
 </script>
 
 <template>

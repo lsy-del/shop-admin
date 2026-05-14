@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { getInfoService } from '@/api/manager'
 
 export const useUserStore = defineStore(
   'admin-user',
@@ -20,12 +21,26 @@ export const useUserStore = defineStore(
       userInfo.value = newUserInfo
     }
 
+    const getInfo = () => {
+      return new Promise((resolve, reject) => {
+        getInfoService()
+          .then((res) => {
+            setUserInfo(res)
+            resolve(res)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    }
+
     return {
       token,
       setToken,
       removeToken,
       userInfo,
-      setUserInfo
+      setUserInfo,
+      getInfo
     }
   },
   {
