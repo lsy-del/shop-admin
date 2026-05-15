@@ -3,21 +3,18 @@ import { useUserStore } from '@/stores/user'
 import { ElMessage } from 'element-plus'
 import { showLoading, hideLoading } from '@/utils/ui-utils'
 
-// 前置守卫
-router.beforeEach(async (to, from, next) => {
-  // 显示loading
+router.beforeEach(async (to, from) => {
   showLoading()
 
   const userStore = useUserStore()
   if (!userStore.token && to.path !== '/login') {
     ElMessage.error('请先登录')
-    return next('/login')
+    return '/login'
   }
 
-  // 已登录，且访问登录页，重定向到上一页
   if (userStore.token && to.path === '/login') {
     ElMessage.error('您已登录，无需重复登录')
-    return next({ path: from.path ? from.path : '/' })
+    return { path: from.path ? from.path : '/' }
   }
 
   if (userStore.token) {
@@ -26,12 +23,8 @@ router.beforeEach(async (to, from, next) => {
 
   let title = to.meta.title ? to.meta.title : '商城后台管理系统'
   document.title = title
-
-  next()
 })
 
-// 全局后置守卫
 router.afterEach((to, from) => {
-  // 隐藏loading
   hideLoading()
 })

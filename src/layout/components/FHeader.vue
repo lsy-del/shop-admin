@@ -1,48 +1,20 @@
 <script setup>
-import { ref } from 'vue'
 import FormDrawer from '@/components/FormDrawer.vue'
 import { useUserStore } from '@/stores/user'
-import { showModal } from '@/utils/ui-utils'
-import { logoutService, updatePasswordService } from '@/api/manager'
-import router from '@/router'
-import { ElMessage } from 'element-plus'
 import { useFullscreen } from '@vueuse/core'
+import { useRePassword, useLogout } from '@/utils/useManager'
 
 const userStore = useUserStore()
 const { isFullscreen, toggle } = useFullscreen()
-
-const rePasswordForm = ref({
-  oldpassword: '',
-  password: '',
-  repassword: ''
-})
-
-const rePasswordFormRef = ref(null)
-const formDrawerRef = ref(null)
-
-const rules = ref({
-  oldpassword: [{ required: true, message: '请输入旧密码', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入新密码', trigger: 'blur' }],
-  repassword: [{ required: true, message: '请再次确认新密码', trigger: 'blur' }]
-})
-
-const onSubmit = () => {
-  rePasswordFormRef.value.validate((valid) => {
-    if (!valid) {
-      return false
-    }
-    formDrawerRef.value.showLoading()
-    updatePasswordService(rePasswordForm.value)
-      .then(() => {
-        ElMessage.success('修改密码成功,请重新登录')
-        userStore.logout()
-        router.push('/login')
-      })
-      .finally(() => {
-        formDrawerRef.value.hideLoading()
-      })
-  })
-}
+const {
+  rePasswordForm,
+  rePasswordFormRef,
+  formDrawerRef,
+  rules,
+  onSubmit,
+  openRePassword
+} = useRePassword()
+const handleLogout = useLogout()
 
 const handleCommand = (c) => {
   switch (c) {
@@ -50,19 +22,9 @@ const handleCommand = (c) => {
       handleLogout()
       break
     case 'rePassword':
-      formDrawerRef.value.open()
+      openRePassword()
       break
   }
-}
-
-const handleLogout = () => {
-  showModal('确定要退出登录吗？').then(() => {
-    logoutService().finally(() => {
-      userStore.logout()
-      router.push('/login')
-      ElMessage.success('退出登录成功')
-    })
-  })
 }
 
 const handleRefresh = () => {
@@ -116,6 +78,7 @@ const handleRefresh = () => {
 
   <FormDrawer ref="formDrawerRef" title="修改密码" @submit="onSubmit">
     <el-form
+      class="w-full"
       label-width="auto"
       ref="rePasswordFormRef"
       :model="rePasswordForm"

@@ -5,7 +5,7 @@ defineProps({
   title: String,
   size: {
     type: String,
-    default: '45%'
+    default: '35%'
   },
   destroyOnClose: {
     type: Boolean,
